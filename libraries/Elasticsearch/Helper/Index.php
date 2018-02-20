@@ -143,7 +143,7 @@ class Elasticsearch_Helper_Index {
                         ]
                     ],
                     'files' => [
-                        'type' => 'nested',
+                        'type' => 'object',
                         'properties' => [
                             'id'      => ['type' => 'integer', 'index' => false],
                             'title'   => ['type' => 'keyword'],
@@ -158,7 +158,7 @@ class Elasticsearch_Helper_Index {
                         'fields' => ['keyword' => ['type' => 'keyword']]
                     ],
                     'blocks' => [
-                        'type' => 'nested',
+                        'type' => 'object',
                         'properties' => [
                             'text'        => ['type' => 'text'],
                             'attachments' => ['type' => 'text']
@@ -298,8 +298,7 @@ class Elasticsearch_Helper_Index {
             $must_query = [
                 'query_string' => [
                     'query' => $terms,
-                    'default_operator' => 'OR',
-                    'default_field' => '*'
+                    'default_operator' => 'OR'
                 ]
             ];
         }
