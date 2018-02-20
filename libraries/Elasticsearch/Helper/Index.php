@@ -298,8 +298,8 @@ class Elasticsearch_Helper_Index {
             $must_query = [
                 'query_string' => [
                     'query' => $terms,
-                    'default_field' => '_all',
-                    'default_operator' => 'OR'
+                    'default_operator' => 'OR',
+                    'default_field' => '*'
                 ]
             ];
         }
