@@ -8,6 +8,10 @@
     margin: 10px 0 0 0;
     padding: 0;
  }
+.elasticsearch-result ul ul {
+    list-style-type: circle;
+    margin: 0 0 0 25px;
+}
 .elasticsearch-result ul li {
     margin: 0 0 5px 0;
 }

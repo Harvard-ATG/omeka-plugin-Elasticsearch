@@ -15,12 +15,24 @@
 <?php endif; ?>
 
 <?php if(isset($hit['_source']['elements']) && isset($hit['_source']['element'])): ?>
-    <?php $elementText = $hit['_source']['element']; ?>
-    <?php $elementNames = $hit['_source']['elements']; ?>
-    <?php foreach($elementNames as $elementName): ?>
-        <?php if(isset($elementText[$elementName['name']])): ?>
-            <li title="element.<?php echo $elementName['name']; ?>"><b><?php echo $elementName['displayName']; ?>:</b> <?php echo $elementText[$elementName['name']]; ?></li>
-        <?php endif; ?>
+    <?php $elements = $hit['_source']['elements']; ?>
+    <?php foreach($elements as $element): ?>
+        <li class="elasticsearch-element" title="element.<?php echo $element['name']; ?>">
+            <b><?php echo $element['displayName']; ?>:</b>
+            <?php if(is_array($element['text'])): ?>
+                <?php if(count($element['text']) == 1): ?>
+                    <?php echo $element['text'][0]; ?>
+                <?php elseif(count($element['text']) > 1): ?>
+                    <ul class="elasticsearch-element-texts" >
+                    <?php foreach($element['text'] as $text): ?>
+                        <li><?php echo $text; ?></li>
+                    <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <?php else: ?>
+                <?php echo $element['text']; ?>
+            <?php endif; ?>
+        </li>
     <?php endforeach; ?>
 <?php endif; ?>
 

@@ -138,8 +138,10 @@ class Elasticsearch_Helper_Index {
                     'elements'   => [
                         'type' => 'object',
                         'properties' => [
+                            'id'          => ['type' => 'integer', 'index' => false],
                             'displayName' => ['type' => 'keyword', 'index' => false],
-                            'name'        => ['type' => 'keyword', 'index' => false]
+                            'name'        => ['type' => 'keyword', 'index' => false],
+                            'text'        => ['type' => 'text', 'index' => false],
                         ]
                     ],
                     'files' => [
