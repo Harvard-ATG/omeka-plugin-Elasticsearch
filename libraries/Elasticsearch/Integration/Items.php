@@ -110,8 +110,8 @@ class Elasticsearch_Integration_Items extends Elasticsearch_Integration_BaseInte
 
         // elements:
         $itemElementTexts = $this->_getElementTexts($item);
-        $doc->setField('elements', $itemElementTexts['names']);
-        $doc->setField('element', $itemElementTexts['data']);
+        $doc->setField('elements', $itemElementTexts['elements']);
+        $doc->setField('element', $itemElementTexts['element']);
 
         // tags:
         $tags = [];
@@ -177,23 +177,44 @@ class Elasticsearch_Integration_Items extends Elasticsearch_Integration_BaseInte
      * @return array
      */
     protected function _getElementTexts($record, $options=array()) {
-        $normalize = isset($options['normalize']) ? (bool) $options['normalize'] : true;
-        $elementData = [];
-        $elementNames = [];
+        $opt_normalize = isset($options['normalize']) ? (bool) $options['normalize'] : true;
+
+        // Retrieve all of the element texts (each element could have several texts - multi-valued)
+        $elementById = [];
+        $elementOrderById = [];
         try {
             foreach ($record->getAllElementTexts() as $elementText) {
                 $element = $record->getElementById($elementText->element_id);
-                if($normalize) {
-                    $normalizedName = strtolower(preg_replace('/[^a-zA-Z0-9-_]/', '', $element->name));
-                } else {
-                    $normalizedName = $element->name;
+                if(!isset($elementById[$element->id])) {
+                    if($opt_normalize) {
+                        $nameNormalized = strtolower(preg_replace('/[^a-zA-Z0-9-_]/', '', $element->name));
+                    } else {
+                        $nameNormalized = $element->name;
+                    }
+                    $elementById[$element->id] = [
+                        'id'          => $element->id,
+                        'displayName' => $element->name,
+                        'name'        => $nameNormalized,
+                        'text'        => []
+                    ];
+                    $elementOrderById[] = $element->id;
                 }
-                $elementData[$normalizedName] = $elementText->text;
-                $elementNames[] = ['displayName' => $element->name, 'name' => $normalizedName];
+
+                $elementById[$element->id]['text'][] = $elementText->text;
             }
         } catch(Omeka_Record_Exception $e) {
             $this->_log("Error loading elements for record {$record->id}. Error: ".$e->getMessage(), Zend_Log::WARN);
         }
-        return array('names' => $elementNames, 'data' => $elementData);
+
+        // Divide the element data into an ordered array and a mapping object
+        $elements = [];
+        $element = [];
+        foreach($elementOrderById as $id) {
+            $data = $elementById[$id];
+            $elements[] = $data;
+            $element[$data['name']] = $data['text'];
+        }
+
+        return array('elements' => $elements, 'element' => $element);
     }
 }
