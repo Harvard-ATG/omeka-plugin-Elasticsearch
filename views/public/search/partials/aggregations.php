@@ -6,7 +6,7 @@ $applied_facets = $query['facets'];
 
 <?php if(count($applied_facets) > 0): ?>
 <div id="elasticsearch-filters-active">
-<h3>Applied Filters (<a style="font-size: 80%" href="<?php echo get_view()->url('/elasticsearch').'?q='.urlencode($query['q']); ?>">Reset</a>)</h3>
+<h2>Applied Filters (<a style="font-size: 80%; text-decoration: underline;" href="<?php echo get_view()->url('/elasticsearch').'?q='.urlencode($query['q']); ?>">Reset</a>)</h2>
 <ul>
     <?php foreach($applied_facets as $facet_name => $facet_values): ?>
         <?php $facet_label = htmlspecialchars($aggregation_labels[$facet_name]); ?>
@@ -22,7 +22,7 @@ $applied_facets = $query['facets'];
 <?php endif; ?>
 
 <div id="elasticsearch-filters">
-<h3>Filters</h3>
+<h2>Filters</h2>
 <?php foreach($aggregation_labels as $agg_name => $agg_label): ?>
     <?php if(count($aggregations[$agg_name]['buckets']) > 0): ?>
         <h4><?php echo $agg_label; ?></h4>
