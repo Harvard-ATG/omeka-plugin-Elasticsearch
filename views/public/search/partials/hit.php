@@ -7,7 +7,7 @@
     <?php $record_url = isset($hit['_source']['url']) ? public_url($hit['_source']['url']) : record_url($record); ?>
     <?php $title = !empty($hit['_source']['title']) ? $hit['_source']['title'] : __('Untitled').' '.$hit['_source']['resulttype']; ?>
 
-    <h3><a href="<?php echo $record_url; ?>" title="<?php echo htmlspecialchars($title); ?>"><?php echo $title; ?></a></h3>
+    <h2><a href="<?php echo $record_url; ?>" title="<?php echo htmlspecialchars($title); ?>"><?php echo $title; ?></a></h2>
 
     <?php
     try {
