@@ -46,6 +46,12 @@ class ElasticsearchPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function hookUpgrade($args) {
+        $oldVersion = $args['old_version'];
+
+        // set default option for displaying timestamps if upgrading from < 1.2
+        if (version_compare($oldVersion, '1.2', '<')) {
+            set_option("elasticsearch_show_timestamps", true);
+        }
     }
 
     public function hookDefineRoutes($args) {
@@ -81,6 +87,7 @@ class ElasticsearchPlugin extends Omeka_Plugin_AbstractPlugin {
         set_option('elasticsearch_scheme', $host['scheme']);
         set_option('elasticsearch_user', $host['user']);
         set_option('elasticsearch_pass', $host['pass']);
+        set_option('elasticsearch_show_timestamps', true);
     }
 
     protected function _clearOptions() {
@@ -91,6 +98,7 @@ class ElasticsearchPlugin extends Omeka_Plugin_AbstractPlugin {
         delete_option('elasticsearch_scheme');
         delete_option('elasticsearch_user');
         delete_option('elasticsearch_pass');
+        delete_option('elasticsearch_show_timestamps');
     }
 
 }

@@ -59,4 +59,18 @@ class Elasticsearch_AdminController extends Omeka_Controller_AbstractActionContr
             $this->view->form = new Elasticsearch_Form_Index();
         }
     }
+
+    public function displayAction() {
+        // set options for how results are displayed
+        $this->_handlePermissions();
+        $form = new Elasticsearch_Form_Display();
+        if ($this->_request->isPost() && $form->isValid($_POST)) {
+            foreach ($form->getValues() as $option => $value) {
+                set_option($option, $value);
+            }
+            $this->redirect('/elasticsearch/admin/display');
+        } else {
+            $this->view->form = new Elasticsearch_Form_Display();
+        }
+    }
 }

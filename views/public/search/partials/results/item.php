@@ -40,7 +40,9 @@
     <li title="tags"><b>Tags:</b>  <?php echo implode(", ", $hit['_source']['tags']); ?></li>
 <?php endif; ?>
 
+    <?php if (get_option('elasticsearch_show_timestamps')) : ?>
     <li title="created"><b>Record Created: </b> <?php echo Elasticsearch_Utils::formatDate($hit['_source']['created']); ?></li>
     <li title="updated"><b>Record Updated: </b> <?php echo Elasticsearch_Utils::formatDate($hit['_source']['updated']); ?></li>
+    <?php endif; ?>
 </ul>
 
